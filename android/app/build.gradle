@@ -30,9 +30,6 @@ if (keystorePropertiesFile.exists()) {
 }
 
 
-
-
-
 android {
     compileSdkVersion 34
     ndkVersion flutter.ndkVersion
@@ -51,7 +48,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.hasson.iptv"
+        applicationId "com.mansory.iptv"
         minSdkVersion 21
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()

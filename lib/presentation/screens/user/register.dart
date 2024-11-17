@@ -17,14 +17,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     "http://speed.manef2025.xyz:80",
     "http://speed4k.pro:80",
     "http://max.amigo00.com:2052",
-    "http://larache.pro:80"
-        "http://24h.trialott.xyz:80"
+    "http://larache.pro:80",
+    "http://24h.trialott.xyz:80"
   ];
 
   // Validation function
   bool _isValidCredentials(String username, String password) {
-    // Implement your own validation logic here
-    // For this example, we'll just check if the username and password are not empty
+    // Ensure the username and password are not empty
     return username.isNotEmpty && password.isNotEmpty;
   }
 
