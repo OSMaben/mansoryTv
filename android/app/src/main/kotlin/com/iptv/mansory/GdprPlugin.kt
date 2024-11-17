@@ -1,4 +1,4 @@
-package com.hasson.iptv
+package com.mansory.iptv
 
 
 import android.app.Activity
@@ -50,8 +50,7 @@ class GdprPlugin(private val activity: Activity?) : MethodCallHandler {
                     }
                 )
             },
-            {
-                    requestConsentError ->
+            { requestConsentError ->
                 // Handle request consent error
             }
         )
@@ -67,6 +66,7 @@ class GdprPlugin(private val activity: Activity?) : MethodCallHandler {
                     }
                 )
             }
+
             else -> result.notImplemented()
         }
     }

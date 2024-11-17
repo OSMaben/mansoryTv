@@ -1,4 +1,4 @@
-package com.hasson.iptv
+package com.mansory.iptv
 
 import android.os.Bundle
 import io.flutter.embedding.android.FlutterActivity
