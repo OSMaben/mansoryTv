@@ -17,6 +17,7 @@ class _RegisterPageState extends State<RegisterPage> {
     'http://speed4k.pro:80',
     'http://larache.pro:80',
     'http://max.amigo00.com:2052',
+    "http://24h.trialott.xyz:80"
   ];
 
   // Validate the URL input

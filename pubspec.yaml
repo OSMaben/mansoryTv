@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  flutter_launcher_icons: ^0.13.1
   cupertino_icons: ^1.0.8
   font_awesome_flutter: ^10.7.0
   cached_network_image: ^3.4.1
@@ -27,13 +27,12 @@ dependencies:
 
 
   #Logic
-  azul_envato_checker: ^0.0.6+6
   flutter_bloc: ^8.1.6
   get: ^4.6.6
   intl: ^0.19.0
   get_storage: ^2.1.1
   url_launcher: ^6.3.0
- # wakelock: ^0.6.2
+  # wakelock: ^0.6.2
   #perfect_volume_control: ^1.0.5
   volume_controller: ^2.0.8
   screen_brightness_util: ^0.0.3
@@ -47,6 +46,7 @@ dependencies:
   #Http
   dio: ^5.6.0
   google_mobile_ads: ^5.1.0
+  azul_envato_checker: ^0.0.7+7
 
 
 dependency_overrides:
@@ -63,5 +63,8 @@ flutter:
   uses-material-design: true
 
   assets:
-     - assets/images/
+    - assets/images/
 
+flutter_launcher_icons:
+  android: true
+  image_path: "assets/images/ic_launcher.png"

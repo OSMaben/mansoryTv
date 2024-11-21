@@ -8,11 +8,13 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final _fullUrl = TextEditingController();
   final _username = TextEditingController();
   final _password = TextEditingController();
+  final _url = TextEditingController();
 
   // List of allowed servers
-  final List<String> _allowedServers = [
+  final List<String> allowedServers = [
     "http://max84.a8slate.com:2052",
     "http://speed.manef2025.xyz:80",
     "http://speed4k.pro:80",
@@ -22,9 +24,96 @@ class _RegisterScreenState extends State<RegisterScreen> {
   ];
 
   // Validation function
-  bool _isValidCredentials(String username, String password) {
-    // Ensure the username and password are not empty
-    return username.isNotEmpty && password.isNotEmpty;
+  bool isValidServer(String url) {
+    url = url.replaceAll(RegExp(r'/+$'), '');
+    return allowedServers.contains(url);
+  }
+
+  // Function to handle URL parsing and extracting parameters
+  _convertM3utoXtreme(TextStyle style) {
+    showDialog(
+      context: context,
+      builder: (_) => CupertinoAlertDialog(
+        title: const Text('ضع رابط M3U الخاص بك'),
+        content: Material(
+          color: Colors.transparent,
+          child: TextField(
+            controller: _fullUrl,
+            decoration: InputDecoration(
+              hintText:
+                  "http://domain.tr:8080?get.php/username=test&password=123",
+              hintStyle: Get.textTheme.bodyMedium!.copyWith(
+                color: Colors.grey,
+                fontFamily: GoogleFonts.notoKufiArabic().fontFamily,
+              ),
+            ),
+            style: style,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              _fullUrl.clear();
+              Get.back();
+            },
+            child: Text(
+              'إلغاء',
+              style: Get.textTheme.bodyMedium!.copyWith(
+                color: Colors.grey.shade400,
+                fontFamily: GoogleFonts.notoKufiArabic().fontFamily,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              var txt = _fullUrl.text;
+              if (txt.isEmpty) {
+                return;
+              }
+
+              if (Uri.tryParse(txt)?.hasAbsolutePath ?? false) {
+                Uri url = Uri.parse(txt);
+                var parameters = url.queryParameters;
+                String serverUrl =
+                    "${url.scheme}://${url.host}${url.hasPort ? ":${url.port}" : ""}";
+
+                if (isValidServer(serverUrl)) {
+                  _username.text = parameters['username'] ?? '';
+                  _password.text = parameters['password'] ?? '';
+                  _url.text = serverUrl;
+                  Get.back();
+                } else {
+                  Get.back();
+                  showWarningToast(
+                    context,
+                    'اشتراك غير صالح',
+                    'اشتراكك ليس من HassonTV. يرجى الحصول على اشتراكك من hassontv.com',
+                  );
+                }
+              } else {
+                debugPrint("This text is not a valid URL!");
+                Get.snackbar("Error", "The provided data is not correct.");
+              }
+            },
+            child: Text(
+              'حفظ',
+              style: Get.textTheme.bodyMedium!.copyWith(
+                color: kColorPrimary,
+                fontFamily: GoogleFonts.notoKufiArabic().fontFamily,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _url.dispose();
+    _username.dispose();
+    _password.dispose();
+    super.dispose();
   }
 
   @override
@@ -50,8 +139,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     if (state is AuthFailed) {
                       showWarningToast(
                         context,
-                        'Login failed.',
-                        'Please check your IPTV credentials and try again.',
+                        'فشل تسجيل الدخول.',
+                        'يرجى التحقق من بيانات اعتماد IPTV الخاصة بك والمحاولة مرة أخرى.',
                       );
                     } else if (state is AuthSuccess) {
                       context.read<LiveCatyBloc>().add(GetLiveCategories());
@@ -78,6 +167,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   color: Colors.white,
                                 ),
                               ),
+                              TextButton.icon(
+                                icon: const Icon(
+                                  FontAwesomeIcons.link,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
+                                onPressed: () {
+                                  _convertM3utoXtreme(style);
+                                },
+                                label: Text(
+                                  'إضافة M3U',
+                                  style:
+                                      Get.theme.textTheme.bodyMedium!.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily:
+                                        GoogleFonts.notoKufiArabic().fontFamily,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                           Expanded(
@@ -100,7 +209,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   ),
                                   const SizedBox(height: 15),
                                   Text(
-                                    'قم بتسجيل الدخول لاكتشاف جميع الأفلام والبرامج التلفزيونية والبث التلفزيوني المباشر، واستمتع بمميزاتنا.',
+                                    'قم بتسجيل الدخول لاكتشاف جميع الأفلام والبرامج التلفزيونية والبث التلفزيوني المباشر،\nوالتمتع بميزاتنا.',
                                     textAlign: TextAlign.center,
                                     style: Get.textTheme.bodyLarge!.copyWith(
                                       color: Colors.white,
@@ -144,7 +253,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         color: kColorPrimary,
                                       ),
                                     ),
-                                    obscureText: true,
+                                    style: style,
+                                  ),
+                                  const SizedBox(height: 15),
+                                  TextField(
+                                    controller: _url,
+                                    decoration: InputDecoration(
+                                      hintText: "http://url.domain.net:8080",
+                                      hintStyle:
+                                          Get.textTheme.bodyMedium!.copyWith(
+                                        color: Colors.grey,
+                                      ),
+                                      suffixIcon: const Icon(
+                                        FontAwesomeIcons.link,
+                                        size: 18,
+                                        color: kColorPrimary,
+                                      ),
+                                    ),
                                     style: style,
                                   ),
                                   const SizedBox(height: 15),
@@ -168,7 +293,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                     .externalApplication);
                                           },
                                           child: Text(
-                                            'سياسة الخصوصية',
+                                            'سياسة الخصوصية ',
                                             style: Get.textTheme.bodyMedium!
                                                 .copyWith(
                                               color: kColorPrimary
@@ -181,7 +306,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           ),
                                         ),
                                         Text(
-                                          'من خلال التسجيل فإنك توافق على',
+                                          'من خلال التسجيل، فإنك توافق على ',
                                           style: Get.textTheme.bodyMedium!
                                               .copyWith(
                                             color: Colors.white70,
@@ -203,45 +328,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               label: "إضافة مستخدم",
                               isLoading: isLoading,
                               onTap: () {
-                                String username = _username.text;
-                                String password = _password.text;
-
-                                if (_isValidCredentials(username, password)) {
-                                  bool validServerFound = false;
-
-                                  // Loop through the allowed servers to check if credentials match any of them
-                                  for (String server in _allowedServers) {
-                                    // Here we add a logic that should attempt a network call, but for simplicity,
-                                    // we’re simulating a successful check with our AuthBloc and assuming a server match
-                                    // if the server is in our allowed list.
-
-                                    // Trigger authentication attempt with current server in the loop
+                                if (_username.text.isNotEmpty &&
+                                    _password.text.isNotEmpty &&
+                                    _url.text.isNotEmpty) {
+                                  if (isValidServer(_url.text.trim())) {
                                     context.read<AuthBloc>().add(AuthRegister(
-                                          username,
-                                          password,
-                                          server,
+                                          _username.text,
+                                          _password.text,
+                                          _url.text,
                                         ));
-
-                                    // Set flag to true since the server is in the allowed list
-                                    validServerFound = true;
-                                    break; // Stop loop if we have a valid match
-                                  }
-
-                                  if (!validServerFound) {
-                                    // Show error if no valid server was found in _allowedServers
+                                  } else {
                                     showWarningToast(
                                       context,
-                                      'Invalid subscription',
-                                      'Your subscription is not from our approved servers. Please get your subscription from MansoryTv.com',
+                                      'اشتراك غير صالح',
+                                      // Title: Invalid subscription
+                                      'اشتراكك ليس من HassonTV. يرجى الحصول على اشتراكك من hassontv.com',
+                                      // Message
                                     );
                                   }
-                                } else {
-                                  // Show error if username or password is empty
-                                  showWarningToast(
-                                    context,
-                                    'Login failed',
-                                    'Please enter a valid username and password.',
-                                  );
                                 }
                               },
                             ),
