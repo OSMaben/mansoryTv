@@ -87,7 +87,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   showWarningToast(
                     context,
                     'اشتراك غير صالح',
-                    'اشتراكك ليس من HassonTV. يرجى الحصول على اشتراكك من hassontv.com',
+                    'اشتراكك ليس من mansoryTv. يرجى الحصول على اشتراكك من mansorytv.com',
                   );
                 }
               } else {
@@ -342,7 +342,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       context,
                                       'اشتراك غير صالح',
                                       // Title: Invalid subscription
-                                      'اشتراكك ليس من HassonTV. يرجى الحصول على اشتراكك من hassontv.com',
+                                      'اشتراكك ليس من mansoryTv. يرجى الحصول على اشتراكك من mansoryTv.com',
                                       // Message
                                     );
                                   }
