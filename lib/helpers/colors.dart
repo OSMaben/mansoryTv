@@ -1,19 +1,19 @@
 part of 'helpers.dart';
 
-const Color kColorPrimary = Color.fromARGB(255, 20, 105, 231);
-const Color kColorPrimaryDark = Color.fromARGB(255, 53, 89, 248);
+const Color kColorPrimary = Color.fromARGB(255, 64, 131, 232);
+const Color kColorPrimaryDark = Color.fromARGB(255, 39, 59, 161);
 
 const Color kColorFocus = Color.fromARGB(255, 4, 95, 160);
 
-const Color kColorBack = Color(0xFF262435);
-const Color kColorBackDark = Color(0xFF1e182c);
+const Color kColorBack = Color(0xFF14153A);
+const Color kColorBackDark = Color(0xff0a082c);
 
-const Color kColorCardLight = Color(0xFF1A5F8C);
+const Color kColorCardLight = Color(0xFF172048);
 const Color kColorCardDark = Color(0xFF162546);
 const Color kColorCardDarkness = Color(0xFF100E15);
 
-const Color kColorHint = Color(0xFF555866);
-const Color kColorHintGrey = Color(0xFF757575);
+const Color kColorHint = Color(0xFFE7E7E7);
+const Color kColorHintGrey = Color(0xFFF5F5F5);
 const Color kColorFontLight = Color(0xFFFFFFFF);
 
 BoxDecoration kDecorBackground = const BoxDecoration(

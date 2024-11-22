@@ -167,7 +167,9 @@ class CardInfoMovie extends StatelessWidget {
               const SizedBox(width: 5),
               Text(
                 hint,
-                style: Get.textTheme.headlineSmall,
+                style: Get.textTheme.headlineSmall!.copyWith(
+                  color: Colors.white,
+                ),
               ),
             ],
           ),
@@ -176,24 +178,26 @@ class CardInfoMovie extends StatelessWidget {
               ? Text(
                   title,
                   style: Get.textTheme.titleSmall!.copyWith(
+                    color: Colors.white,
                     fontWeight: FontWeight.w100,
                   ),
                 )
               : ReadMoreText(
                   title,
                   trimLines: 2,
-                  colorClickableText: kColorFocus,
+                  colorClickableText: Colors.white,
                   trimMode: TrimMode.Line,
                   trimCollapsedText: 'more',
                   trimExpandedText: 'less',
                   style: Get.textTheme.titleSmall!.copyWith(
                     fontWeight: FontWeight.w100,
+                    color: Colors.white,
                   ),
                   moreStyle: Get.textTheme.headlineSmall!.copyWith(
-                    color: kColorFocus,
+                    color: Colors.white,
                   ),
                   lessStyle: Get.textTheme.headlineSmall!.copyWith(
-                    color: kColorFocus,
+                    color: Colors.white,
                   ),
                 ),
         ],
@@ -222,7 +226,7 @@ class CardMovieImageRate extends StatelessWidget {
             fit: BoxFit.cover,
             errorWidget: (_, i, e) {
               return Container(
-                color: Colors.grey,
+                color: Colors.white,
               );
             },
           ),
@@ -370,7 +374,7 @@ class CardEpisodeItem extends StatelessWidget {
                       child: const Center(
                         child: Icon(
                           FontAwesomeIcons.image,
-                          color: Colors.white24,
+                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -395,7 +399,7 @@ class CardEpisodeItem extends StatelessWidget {
                     episode!.info!.plot ?? "",
                     maxLines: 3,
                     style: Get.textTheme.titleMedium!.copyWith(
-                      color: Colors.grey.shade400,
+                      color: Colors.white,
                       fontSize: 15.sp,
                     ),
                   ),
@@ -404,7 +408,7 @@ class CardEpisodeItem extends StatelessWidget {
                     children: [
                       Icon(
                         FontAwesomeIcons.clock,
-                        color: Colors.grey.shade400,
+                        color: Colors.white,
                         size: 16.sp,
                       ),
                       const SizedBox(width: 5),
@@ -412,14 +416,14 @@ class CardEpisodeItem extends StatelessWidget {
                         getDurationMovie(episode!.info!.duration),
                         maxLines: 3,
                         style: Get.textTheme.titleMedium!.copyWith(
-                          color: Colors.grey.shade400,
+                          color: Colors.white,
                           fontSize: 15.sp,
                         ),
                       ),
                       const Spacer(flex: 2),
                       Icon(
                         FontAwesomeIcons.circlePlay,
-                        color: isSelected ? Colors.white : Colors.grey.shade400,
+                        color: isSelected ? Colors.white : Colors.white,
                         size: isSelected ? 17.sp : 16.sp,
                       ),
                       const SizedBox(width: 5),
@@ -472,7 +476,7 @@ class CardSeasonItem extends StatelessWidget {
               width: 2,
               height: 9.h,
               decoration: BoxDecoration(
-                color: isSelected ? kColorFocus : Colors.transparent,
+                color: isSelected ? kColorFocus : Colors.white,
                 borderRadius: BorderRadius.circular(5),
               ),
             ),
@@ -482,7 +486,7 @@ class CardSeasonItem extends StatelessWidget {
               style: isSelected
                   ? Get.textTheme.headlineMedium
                   : Get.textTheme.titleMedium!.copyWith(
-                      color: Colors.grey.shade500,
+                      color: Colors.white,
                       fontSize: 17.sp,
                     ),
             ),

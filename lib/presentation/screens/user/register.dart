@@ -13,20 +13,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _password = TextEditingController();
   final _url = TextEditingController();
 
-  // List of allowed servers
-  final List<String> allowedServers = [
-    "http://max84.a8slate.com:2052",
-    "http://speed.manef2025.xyz:80",
-    "http://speed4k.pro:80",
-    "http://max.amigo00.com:2052",
-    "http://larache.pro:80",
-    "http://24h.trialott.xyz:80"
-  ];
+  // List of allowed servers with their alternative domains
+  final Map<String, List<String>> serverAliases = {
+    "http://speed.manef2025.xyz:80": [
+      "http://speed.manef2025.xyz:80",
+      "http://max84.a8slate.com:2052",
+      "http://speed4k.pro:80",
+      "http://max.amigo00.com:2052",
+      "http://24h.trialott.xyz:80"
+    ],
+  };
 
-  // Validation function
+  // Updated validation function to check across server aliases
   bool isValidServer(String url) {
     url = url.replaceAll(RegExp(r'/+$'), '');
-    return allowedServers.contains(url);
+
+    // Check if the URL is directly in any of the alias lists
+    for (var aliases in serverAliases.values) {
+      if (aliases.contains(url)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // Helper function to get the primary server URL
+  String getPrimaryServerUrl(String url) {
+    url = url.replaceAll(RegExp(r'/+$'), '');
+    for (var entry in serverAliases.entries) {
+      if (entry.value.contains(url)) {
+        return entry.key;
+      }
+    }
+    return url;
   }
 
   // Function to handle URL parsing and extracting parameters
@@ -80,7 +99,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 if (isValidServer(serverUrl)) {
                   _username.text = parameters['username'] ?? '';
                   _password.text = parameters['password'] ?? '';
-                  _url.text = serverUrl;
+                  _url.text =
+                      getPrimaryServerUrl(serverUrl); // Use primary server URL
                   Get.back();
                 } else {
                   Get.back();
@@ -331,19 +351,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 if (_username.text.isNotEmpty &&
                                     _password.text.isNotEmpty &&
                                     _url.text.isNotEmpty) {
-                                  if (isValidServer(_url.text.trim())) {
+                                  String serverUrl = _url.text.trim();
+                                  if (isValidServer(serverUrl)) {
+                                    // Always use the primary server URL when registering
+                                    String primaryServer =
+                                        getPrimaryServerUrl(serverUrl);
                                     context.read<AuthBloc>().add(AuthRegister(
                                           _username.text,
                                           _password.text,
-                                          _url.text,
+                                          primaryServer,
                                         ));
                                   } else {
                                     showWarningToast(
                                       context,
                                       'اشتراك غير صالح',
-                                      // Title: Invalid subscription
                                       'اشتراكك ليس من mansoryTv. يرجى الحصول على اشتراكك من mansoryTv.com',
-                                      // Message
                                     );
                                   }
                                 }
